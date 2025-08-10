@@ -20,10 +20,9 @@
 typedef struct {
 	float x;
 	float y;
-	u8 r;
-	u8 g;
-	u8 b;
-	u8 a;
+	float r;
+	float g;
+	float b;
 } tkpgl_vertex2f;
 
 typedef struct {
@@ -41,17 +40,15 @@ typedef struct {
 	u32 vertex_count;
 	u32 vertex_capacity;
 	tkpgl_vertex2f* vertex_buffer;
+
+	boolean was_buffer_changed : 1;
 } tkpgl_batch;
 
 typedef struct {
 	u16 batch_count;
 	u16 batch_capacity;
+	u16 batch_index;
 	tkpgl_batch* batches;
-
-	struct {
-		u32 program;
-		u32 texture;
-	} state;
 } tkpgl_context;
 
 tkpgl_context* tkpgl_create_context();
@@ -67,6 +64,8 @@ void tkpgl_clear_batches(tkpgl_context* ctx);
 void tkpgl_batch_points(tkpgl_context* ctx, tkpgl_vertex2f* points, u32 count);
 void tkpgl_batch_triangle(tkpgl_context* ctx, tkpgl_vertex2f x1, tkpgl_vertex2f x2, tkpgl_vertex2f x3);
 
+/* shaders */
+void tkpgl_bind_default_shader(tkpgl_context* ctx);
+
 /* rendering */
-void tkpgl_begin(tkpgl_context* ctx);
 void tkpgl_dispatch(tkpgl_context* ctx);
